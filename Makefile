@@ -1,25 +1,35 @@
 #######################################################
 ## ARGUMENTS
 
-NAME =	minitalk
+# NAME
 
-NAME_SERVER	=	server
-NAME_CLIENT	=	client
+NAME				=	minitalk
+
+NAME_SERVER			=	server
+NAME_CLIENT			=	client
 
 NAME_SERVER_BONUS	=	$(addsuffix _bonus, $(NAME_SERVER))
 NAME_CLIENT_BONUS	=	$(addsuffix _bonus, $(NAME_CLIENT))
 
-CC			=	cc
-CFLAGS		=	-Wall -Wextra -Werror
-HEADER		=	-Iinc
+# CC FLAG INC
 
-SRC_DIR		=	src/
-OBJ_DIR		=	obj/
+CC		=	cc
+CFLAGS	=	-Wall -Wextra -Werror
+INC		=	-Iinc
+
+# SRC & OBJ DIR
+
+SRC_DIR	=	src/
+OBJ_DIR	=	obj/
+
+# LIB
 
 LIB_PATH	=	./libft
-LIBA		=	$(LIB_PATH)/libft.a
+LIB			=	$(LIB_PATH)/libft.a
 
-RM			=	rm -rf
+# RM
+
+RM	=	rm -rf
 
 #######################################################
 ## SRCS & OBJS
@@ -36,32 +46,35 @@ OBJ_CLIENT_BONUS	=	$(addprefix $(OBJ_DIR), $(addsuffix _bonus.o, $(NAME_CLIENT))
 #######################################################
 ## RULES
 
-all : $(NAME)
+all : $(LIB) $(NAME)
 
-$(LIBA) :
+$(LIB) :
 		make -C $(LIB_PATH)
 
-$(NAME) : $(LIBA) $(NAME_SERVER) $(NAME_CLIENT)
+$(NAME) : $(NAME_SERVER) $(NAME_CLIENT) Makefile
 
 $(NAME_SERVER) : $(OBJ_SERVER)
-		$(CC) $(CFLAGS) $(HEADER) $(OBJ_SERVER) -o $(NAME_SERVER) $(LIBA)
+		$(CC) $(CFLAGS) $(INC) $(OBJ_SERVER) -o $(NAME_SERVER) $(LIB)
 
 $(NAME_CLIENT) : $(OBJ_CLIENT)
-		$(CC) $(CFLAGS) $(HEADER) $(OBJ_CLIENT) -o $(NAME_CLIENT) $(LIBA)
+		$(CC) $(CFLAGS) $(INC) $(OBJ_CLIENT) -o $(NAME_CLIENT) $(LIB)
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR)
-		$(CC) $(CFLAGS) $(HEADER) -c $< -o $@
+		$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 bonus : all $(NAME_SERVER_BONUS) $(NAME_CLIENT_BONUS)
 
 $(NAME_SERVER_BONUS) : $(OBJ_SERVER_BONUS)
-		$(CC) $(CFLAGS) $(HEADER) $(OBJ_SERVER_BONUS) -o $(NAME_SERVER_BONUS) $(LIBA)
+		$(CC) $(CFLAGS) $(INC) $(OBJ_SERVER_BONUS) -o $(NAME_SERVER_BONUS) $(LIB)
 
 $(NAME_CLIENT_BONUS) : $(OBJ_CLIENT_BONUS)
-		$(CC) $(CFLAGS) $(HEADER) $(OBJ_CLIENT_BONUS) -o $(NAME_CLIENT_BONUS) $(LIBA)
+		$(CC) $(CFLAGS) $(INC) $(OBJ_CLIENT_BONUS) -o $(NAME_CLIENT_BONUS) $(LIB)
 
 $(OBJ_DIR) :
 		@mkdir -p $(OBJ_DIR)
+
+norm :
+	norminette libft inc src
 
 clean :
 		@make -C $(LIB_PATH) fclean
@@ -72,4 +85,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re bonus norm
