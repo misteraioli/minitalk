@@ -31,6 +31,12 @@ LIB			=	$(LIB_PATH)/libft.a
 
 RM	=	rm -rf
 
+# HEADERS
+
+HEADER	= \
+		inc/minitalk.h \
+		inc/minitalk_bonus.h \
+
 #######################################################
 ## SRCS & OBJS
 
@@ -59,7 +65,7 @@ $(NAME_SERVER) : $(OBJ_SERVER)
 $(NAME_CLIENT) : $(OBJ_CLIENT)
 		$(CC) $(CFLAGS) $(INC) $(OBJ_CLIENT) -o $(NAME_CLIENT) $(LIB)
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR)
+$(OBJ_DIR)%.o : $(SRC_DIR)%.c $(HEADER) | $(OBJ_DIR)
 		$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 bonus : all $(NAME_SERVER_BONUS) $(NAME_CLIENT_BONUS)

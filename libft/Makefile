@@ -1,16 +1,32 @@
 #######################################################
 ## ARGUMENTS
 
-NAME		=	libft.a
-CC			=	cc
-CFLAGS		=	-Wall -Wextra -Werror
-HEADER		=	-Iinc
+# NAME
 
-SRC_DIR		=	src/
-OBJ_DIR		=	obj/
+NAME	=	libft.a
 
-AR			=	ar rcs
-RM			=	rm -rf
+# CC FLAG INC
+
+CC		=	cc
+CFLAGS	=	-Wall -Wextra -Werror
+INC		=	-Iinc
+
+# SRC & OBJ DIR
+
+SRC_DIR	=	src/
+OBJ_DIR	=	obj/
+
+# RM & AR
+
+AR	=	ar rcs
+RM	=	rm -rf
+
+# HEADERS
+
+HEADER	= \
+		inc/libft.h \
+		inc/ft_printf.h \
+		inc/get_next_line.h \
 
 #######################################################
 ## SRCS & OBJS
@@ -87,8 +103,8 @@ all : $(NAME)
 $(NAME) : $(OBJS) Makefile
 		$(AR) $(NAME) $(OBJS)
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR)
-		$(CC) $(CFLAGS) $(HEADER) -c $< -o $@
+$(OBJ_DIR)%.o : $(SRC_DIR)%.c $(HEADER) | $(OBJ_DIR)
+		$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(OBJ_DIR):
 		@mkdir -p $(OBJ_DIR) \
