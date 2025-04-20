@@ -57,7 +57,10 @@ all : $(LIB) $(NAME)
 $(LIB) :
 		make -C $(LIB_PATH)
 
-$(NAME) : $(NAME_SERVER) $(NAME_CLIENT) Makefile
+$(NAME) : $(OBJ_DIR) $(NAME_SERVER) $(NAME_CLIENT) Makefile
+
+$(OBJ_DIR) :
+		@mkdir -p $(OBJ_DIR)
 
 $(NAME_SERVER) : $(OBJ_SERVER)
 		$(CC) $(CFLAGS) $(INC) $(OBJ_SERVER) -o $(NAME_SERVER) $(LIB)
@@ -65,7 +68,7 @@ $(NAME_SERVER) : $(OBJ_SERVER)
 $(NAME_CLIENT) : $(OBJ_CLIENT)
 		$(CC) $(CFLAGS) $(INC) $(OBJ_CLIENT) -o $(NAME_CLIENT) $(LIB)
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c $(HEADER) | $(OBJ_DIR)
+$(OBJ_DIR)%.o : $(SRC_DIR)%.c $(HEADER)
 		$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 bonus : all $(NAME_SERVER_BONUS) $(NAME_CLIENT_BONUS)
@@ -75,9 +78,6 @@ $(NAME_SERVER_BONUS) : $(OBJ_SERVER_BONUS)
 
 $(NAME_CLIENT_BONUS) : $(OBJ_CLIENT_BONUS)
 		$(CC) $(CFLAGS) $(INC) $(OBJ_CLIENT_BONUS) -o $(NAME_CLIENT_BONUS) $(LIB)
-
-$(OBJ_DIR) :
-		@mkdir -p $(OBJ_DIR)
 
 norm :
 	norminette libft inc src
